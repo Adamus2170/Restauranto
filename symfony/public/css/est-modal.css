@@ -1,0 +1,71 @@
+textarea{
+	resize: vertical;
+}
+
+.est-modal {
+	border-radius: 5px;
+}
+
+.modal-header{
+	color: #FFF;
+	padding: 10px 20px;
+	border-radius: 5px 5px 0px 0px;
+	text-align: center;
+}
+
+.modal-icon{
+	display: inline;
+	font-size: 80px;
+}
+
+.modal-icon i{
+	margin-top: 50px;
+	margin-bottom: 60px;
+}
+
+[modal-type="success"] .modal-header{
+	background-color: #4ABDAC;
+}
+
+[modal-type="confirm"] .modal-header,
+[modal-type="warning"] .modal-header{
+	background-color: #FF7F66;
+}
+
+.close-modal {
+	cursor: pointer;
+}
+
+.modal-text{
+	text-align: center;
+	font-size: 24px;
+	margin: 10px;
+}
+
+.modal-message{
+	text-align: center;
+	font-size: 18px;
+	margin-top: 10px;
+	margin-bottom: 40px;
+	font-weight: 300;
+}
+
+.modal-buttons{
+	text-align: center;
+	margin-bottom: 10px;
+}
+
+.modal-buttons .col-centered{
+	float: none;
+	margin: 0 auto;
+}
+
+.modal-buttons .btn{
+	margin-bottom: 10px;
+}
+
+.est-modal-warning{
+	color: #FFAA66;
+	margin-top: 5px;
+	margin-left: 5px;
+}

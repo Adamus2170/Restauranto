@@ -1,0 +1,72 @@
+version: '3'
+
+services:
+  database:
+    container_name: mariadb
+    build:
+      context: ./database
+    restart: unless-stopped
+    environment:
+      - MYSQL_DATABASE=${DATABASE_NAME}
+      - MYSQL_USER=${DATABASE_USER}
+      - MYSQL_PASSWORD=${DATABASE_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DATABASE_ROOT_PASSWORD}
+      - TZ=Europe/Warsaw
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./database/data:/var/lib/mysql
+
+  phpmyadmin:
+    container_name: pma
+    image: phpmyadmin/phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: database
+      PMA_PORT: 3306
+      UPLOAD_LIMIT: 1G
+    depends_on:
+      - database
+    ports:
+      - "8080:80"
+
+  php-fpm:
+    build:
+      context: ./php-fpm
+    container_name: php
+    restart: unless-stopped
+    depends_on:
+      - database
+    environment:
+      - APP_ENV=${APP_ENV}
+      - APP_NAME=${APP_NAME}
+      - APP_SECRET=${APP_SECRET}
+      - DATABASE_URL=mysql://${DATABASE_USER}:${DATABASE_PASSWORD}@database:3306/${DATABASE_NAME}?serverVersion=mariadb-10.1.45
+      - SHELL_VERBOSITY=${SHELL_VERBOSITY}
+      - SECURE_SCHEME=${SECURE_SCHEME}
+      - SECRET=${SECRET}
+    volumes:
+      - ../symfony:/var/www
+      - ./nginx/conf.d/custom-${APP_ENV}.ini:/usr/local/etc/php/conf.d/custom.ini
+      - ./php-fpm/hosts:/etc/hosts
+
+  nginx:
+    build:
+      context: ./nginx
+    container_name: nginx
+    restart: unless-stopped
+    volumes:
+      - ../symfony:/var/www
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/sites/:/etc/nginx/sites-available
+      - ./nginx/conf.d/:/etc/nginx/conf.d
+      - ./nginx/ssl:/etc/ssl
+      - ./logs:/var/log
+    depends_on:
+      - php-fpm
+    environment:
+      - APP_HOST=${APP_HOST}
+    ports:
+      - "80:80"
+      - "443:443"

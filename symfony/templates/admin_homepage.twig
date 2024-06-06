@@ -1,0 +1,109 @@
+{% extends "empty.twig" %}
+
+{% block stylesheets %}
+<style>
+    body {
+      padding-top: 20px;
+    }
+    .panel-body .btn:not(.btn-block) {
+      width: 120px;
+      margin-bottom: 10px;
+    }
+    .report_button {
+      font-size: 25px;
+      padding: 20px 15px 15px 15px;
+    }
+    .glyphicon {
+        font-size: 50px;
+    }
+    .col-lg-6 {
+        margin-top: 20px;
+    }
+
+@media (max-width: 550px) {
+    .report_button {
+        font-size: 15px;
+    }
+    .glyphicon {
+        font-size: 30px;
+    }
+}
+
+@media (max-width: 380px) {
+    .report_button {
+        font-size: 10px;
+    }
+    .glyphicon {
+        font-size: 20px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block subtitle %}GDZIE JEST PODTYTUŁ{% endblock %}
+
+{% block page_title %}Homepage{% endblock %}
+{% block page_subtitle %}{% endblock %}
+
+{% block before_page_content %}<hr>{% endblock %}
+
+{% block page_content %}
+<div class="content">
+    <div class="row">
+      <div class="col-lg-6 col-xs-6">
+        <a href="{{ path('homepage_edit') }}">
+          <div class="btn btn-primary col-md-12 col-xs-12 report_button">
+            <span class="glyphicon glyphicon-home"></span>
+            <br />
+            Strona główna
+          </div>
+        </a>
+      </div>
+      <div class="col-lg-6 col-xs-6">
+        <a href="{{ path('users_edit') }}">
+          <div class="btn btn-primary col-md-12 col-xs-12 report_button">
+            <span class="glyphicon glyphicon-user"></span>
+            <br />
+            Użytkownicy
+          </div>
+        </a>
+      </div>
+      <div class="col-lg-6 col-xs-6">
+        <a href="{{ path('menu_edit') }}">
+          <div class="btn btn-primary col-md-12 col-xs-12 report_button">
+            <span class="glyphicon glyphicon-cutlery"></span>
+            <br />
+            Menu
+          </div>
+        </a>
+      </div>
+      <div class="col-lg-6 col-xs-6">
+        <a href="{{ path('news_edit') }}">
+          <div class="btn btn-primary col-md-12 col-xs-12 report_button">
+            <span class="glyphicon glyphicon-globe"></span>
+            <br />
+            Aktualności
+          </div>
+        </a>
+      </div>
+      <div class="col-lg-6 col-xs-6">
+        <a href="{{ path('about_edit') }}">
+          <div class="btn btn-primary col-md-12 col-xs-12 report_button">
+            <span class="glyphicon glyphicon-book"></span>
+            <br />
+            O nas
+          </div>
+        </a>
+      </div>
+      <div class="col-lg-6 col-xs-6">
+        <a href="{{ path('admin_contact') }}">
+          <div class="btn btn-primary col-md-12 col-xs-12 report_button">
+            <span class="glyphicon glyphicon-envelope"></span>
+            <br />
+            Kontakt
+          </div>
+        </a>
+      </div>
+    </div>
+</div>
+{% endblock %}

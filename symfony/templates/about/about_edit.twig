@@ -1,0 +1,50 @@
+{% extends "empty.twig" %}
+
+{% block stylesheets %}{% endblock %}
+
+{% block subtitle %}GDZIE JEST PODTYTUŁ{% endblock %}
+
+{% block page_title %}O nas{% endblock %}
+{% block page_subtitle %}{% endblock %}
+
+{% block before_page_content %}<hr>{% endblock %}
+
+{% block page_content %}
+<div class="content">
+    <div class="table">
+        <table class="table table-striped" id="main_table">
+            <tbody class="data">
+                <tr class="table_headers">
+                    <th class="first_th">Id</th>
+					<th class="first_th">Nagłówek</th>
+					<th class="first_th">Treść</th>
+                    <th class="first_th">Zdjęcie</th>
+					<th class="first_th"></th>
+                </tr>
+				{% for info in about %}
+				<form action="{{ path('delete_user', { 'id': info.id}) }}" method="POST">
+					<tr row_id="{{ info.id }}">
+						<td>{{ info.id }}</td>
+						<td>{{ info.header }}</td>
+						<td>{{ info.description }}</td>
+                        <td><img class="mt-2" src='../uploads/{{ info.image }}' alt='danie' height="100px" width="200px"></td>	
+						<td></td>
+					</tr>
+				</form>
+        		{% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+$(document).ready(function(){
+	$(document).on('click', 'tr[row_id]' , function(){
+		let row_id = 1*$(this).attr('row_id');
+		location.href = "/about_edit/edit/"+row_id;
+	});
+})
+</script>
+{% endblock %}

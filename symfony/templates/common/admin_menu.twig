@@ -1,0 +1,33 @@
+<!-- Sidebar Menu -->
+<ul class="sidebar-menu" data-widget="tree">
+    <li class="header">Menu</li>
+       
+    <li class="active"><a href="{{ path('admin_homepage') }}"><i class="fas fa-home"></i> <span>Strona główna</span></a></li>
+    <li class="treeview" style="height: auto;">
+        <a href="#">
+            <i class="fas fa-bars"></i>  <span>Treść strony</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu" style="display: block;" style="display: none;">
+            <li><a href="{{ path('homepage_edit') }}"><i class="fas fa-home"></i><span>Strona główna</span></a></li>
+            <li><a href="{{ path('menu_edit') }}"><i class="fas fa-utensils"></i><span>Menu</span></a></li>
+            <li><a href="{{ path('news_edit') }}"><i class="fa fa-globe"></i><span>Aktualności</span></a></li>
+            <li><a href="{{ path('about_edit') }}"><i class="fas fa-book"></i><span>O nas</span></a></li>
+            <li><a href="{{ path('admin_contact') }}"><i class="fas fa-envelope"></i><span>Kontakt</span></a></li>
+        </ul>
+    </li>
+    <li class="treeview" style="height: auto;">
+        <a href="#">
+            <i class="fas fa-user-tie"></i>  <span>Administracja</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu" style="display: block;" style="display: none;">
+            <li><a href="{{ path('users_edit') }}"><i class="fas fa-user"></i><span>Użytkownicy</span></a></li>
+        </ul>
+    </li>
+</ul>
+<!-- /.sidebar-menu -->

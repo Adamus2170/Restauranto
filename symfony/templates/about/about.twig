@@ -1,0 +1,37 @@
+{% extends "homepage.twig" %}
+
+{% block body %}
+{# <div class="container">
+    {% for info in about %}
+    <div class="d-flex mt-4">
+        <img src="{{ asset("img/restauracja90.png" )}}" alt="danie"/>
+        <div class="d-flex flex-column justify-content-center text-center">
+            <h5>{{ info.header }}</h5>
+            <p>{{ info.description }}</p>
+        </div>
+    </div>
+    {% endfor %}
+</div> #}
+<!-- About 1 - Bootstrap Brain Component -->
+<div class="content">
+    <section class="py-3 py-md-5">
+    <div class="container">
+        {% for info in about %}
+            <div class="row gy-3 gy-md-4 gy-lg-0 align-items-lg-center">
+            <div class="col-12 col-lg-6 col-xl-5 mt-4">
+                <img class="img-fluid rounded" loading="lazy" src="/uploads/p1-6655b54a8c345.png" alt="About 1">
+            </div>
+            <div class="col-12 col-lg-6 col-xl-7">
+                <div class="row justify-content-xl-center">
+                    <div class="col-12 col-xl-11">
+                        <h2 class="mb-3">{{ info.header }}</h2>
+                        <p class="mb-5">{{ info.description }}</p>
+                    </div>
+                </div>
+            </div>
+            </div>
+        {% endfor %}
+    </div>
+    </section>
+</div>
+{% endblock %}

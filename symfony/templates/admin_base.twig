@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=yes" name="viewport">
+
+		<!-- Bootstrap (3.3.7) -->
+		<link rel="stylesheet" href="{{ asset('/plugins/bootstrap-3.3.7/css/bootstrap.min.css') }}" />
+
+		<!-- Font Awesome (5.14.0) -->
+		<link rel="stylesheet" href="{{ asset('/plugins/fontawesome-free-5.14.0-web/css/all.min.css') }}" />
+		
+		<!-- DataTables -->
+		<link rel="stylesheet" href="../../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+		<link rel="stylesheet" href="../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+		<link rel="stylesheet" href="../../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+
+		<!-- Summernote -->
+		<link rel="stylesheet" href="../../plugins/summernote/summernote-bs4.min.css">
+		<!-- Select2 (4.0.6-rc.0) -->
+		<link rel="stylesheet" href="{{ asset('/plugins/select2/select2.min.css') }}">
+
+		<!-- AdminLTE (2.4.2) -->
+		<link rel="stylesheet" href="{{ asset('/plugins/admin-lte/AdminLTE.min.css') }}">
+		<link rel="stylesheet" href="{{ asset('/plugins/admin-lte/skins/skin-black-light.min.css') }}">
+
+		{# <!-- bootstrap datepicker (1.7.1) -->
+		<link rel="stylesheet" href="{{ asset('/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}"> #}
+
+		<!-- Google Font (Source Sans Pro: 300, 400, 600, 700, 300italic, 400italic, 600italic) -->
+		<link rel="stylesheet" href="{{ asset('/plugins/google-fonts/css/google_fonts.css') }}">
+
+		<!-- Custom Global CSS -->
+		<link rel="stylesheet" href="{{ asset('/css/system.css') }}">
+
+		<!-- est Modal -->
+		<link rel="stylesheet" href="{{ asset('/css/est-modal.css')}}">
+
+		{% block stylesheets %}{% endblock %}
+
+	</head>
+	<body class="hold-transition skin-black-light sidebar-mini {% block body_class %}{% endblock %}">
+		{% block body %}{% endblock %}
+
+		<!-- jQuery (3.3.1) -->
+		<script src="{{ asset('/plugins/jQuery/jquery.min.js') }}"></script>
+
+		<!-- jQuery UI (1.12.1) -->
+		<script src="{{ asset('/plugins/jQuery-UI/jquery-ui.min.js') }}"></script>
+
+		<!-- Summernote -->
+		<script src="../../plugins/summernote/summernote-bs4.min.js"></script>
+
+		{# <!-- Bootstrap (3.3.7) -->
+		<script src="{{ asset('/plugins/bootstrap-3.3.7/js/bootstrap.min.js') }}"></script>
+
+		<!-- Bootstrap notify (3.1.3) -->
+		<script src="{{ asset('/plugins/bootstrap-notify-3.1.3/bootstrap-notify.min.js') }}"></script>
+
+		<!-- DataTables (1.10.19) -->
+		<script src="{{ asset('/plugins/data-tables/jquery.dataTables.min.js') }}"></script> #}
+
+		{# <!-- DataTables Bootstrap 3 integration -->
+		<script src="{{ asset('/plugins/data-tables/dataTables.bootstrap.min.js') }}"></script> #}
+
+		<!-- AdminLTE (2.4.2) -->
+		<script src="{{ asset('/plugins/admin-lte/adminlte.min.js') }}"></script>
+
+		<!-- jQuery Form Plugin (3.51.0) -->
+		<script src="{{ asset('/plugins/jQuery-form/jquery.form.min.js') }}"></script>
+
+		<!-- jQuery ba-throttle-debounce (1.1) -->
+		<script src="{{ asset('/plugins/ba-throttle-debounce/jquery.ba-throttle-debounce.min.js') }}"></script>
+
+		<!-- Moment.js (2.29.1) -->
+		{# <script src="{{ asset('/plugins/moment/moment-with-locales.js') }}"></script> #}
+
+		{# <!-- bootstrap datepicker (1.7.1) -->
+		<script src="{{ asset('/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+		<!-- Polish language for the datepicker -->
+		<script src="{{ asset('/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.pl.min.js') }}"></script> #}
+
+		<!-- Select2 (4.0.6-rc.0) -->
+		<script src="{{ asset('/plugins/select2/select2.min.js') }}"></script>
+
+		<!-- File Upload -->
+		{# <script src="{{ asset('/plugins/fileupload/jquery.fileupload.js') }}"></script> #}
+
+		<!-- Inputmask 5 -->
+		{# <script src="{{ asset('/plugins/inputmask/jquery.inputmask.min.js') }}"></script>
+		<script src="{{ asset('/plugins/inputmask/bindings/inputmask.binding.js') }}"></script>
+		<script src="{{ asset('/js/inputmask.est-custom.js') }}"></script> #}
+
+		{% block javascripts %}{% endblock %}
+	</body>
+</html>

@@ -1,0 +1,46 @@
+  <!-- Main Header -->
+  <header class="main-header">
+
+    <!-- Logo -->
+    <a href="{{ path('admin_homepage') }}" class="logo" style="line-height: 44px;">
+      <h4>RestaurantoExample</h4>
+    </a>
+
+    <!-- Header Navbar -->
+    <nav class="navbar navbar-static-top" role="navigation" style="height: 50px;">
+      <!-- Sidebar toggle button-->
+      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button"><i class="fas fa-bars"></i></a>
+      <!-- logo for regular mobile devices -->
+
+      <!-- Navbar Right Menu -->
+      <div class="navbar-custom-menu mb-2">
+        <ul class="sidebar-menu" data-widget="tree">
+          <!-- User Account Menu -->
+          <li class="treeview" style="height: auto;">
+            <!-- Menu Toggle Button -->
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <!-- The user image in the navbar-->
+              <img src="{{ asset('img/user2-160x160.jpg') }}" class="user-image" alt="User Image" width="40px" height="40px">
+              <span>Użytkownik</span>
+              <!-- hidden-xs hides the username on small devices so only the image appears. -->
+            </a>
+            <ul class="treeview-menu">
+              <!-- The user image in the menu -->
+              {# <li>
+                <img src="{{ asset('img/user2-160x160.jpg') }}" class="img-circle" alt="User Image" width="80px" height="80px">
+                <p>Użytkownik</p>
+              </li> #}
+              <!-- Menu Footer-->
+              <li class="user-footer" class="dropdown-item">
+                <div class="pull-left">
+                </div>
+                <div class="pull-right">
+                  <a href="{{ path("logout") }}" class="btn btn-primary">Wyloguj</a>
+                </div>
+              </li>
+            </ul>
+          </li>     
+        </ul>
+      </div>
+    </nav>
+  </header>

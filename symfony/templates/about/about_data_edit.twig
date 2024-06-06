@@ -1,0 +1,57 @@
+{% extends "empty.twig" %}
+
+{% block stylesheets %}{% endblock %}
+
+{% block subtitle %}GDZIE JEST PODTYTUŁ{% endblock %}
+
+{% block page_title %}Edytuj sekcję O nas{% endblock %}
+{% block page_subtitle %}{% endblock %}
+
+{% block before_page_content %}<hr>{% endblock %}
+
+{% block page_content %}
+{# TODO edycja danych w bazie danych za pomocą summernote #}
+<div class="row">
+	<div class="col-lg-6">
+		<div class="box box-default">
+			<div class="box-body">
+                <form action="{{ path('edit_about', { 'id': about.id }) }}" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <h3>Nowe zdjęcie</h3>
+                        <input class="form-control" type="file" accept="image/*" name="pic" id="pic" >{# accept="image/*" #}
+                    </div>
+                    <div class="form-group">
+                        <h3>Obecne zdjęcie</h3>
+                        <img class="mt-2" src='../../uploads/{{ about.image }}' alt='danie' height="200px" width="400px">
+                    </div>
+                    <div class="form-group">
+                        <h3>Nagłówek</h3>
+                        <input type="text" class="form-control" name="header" value="{{ about.header }}" required></input>
+                    </div>
+                    <div class="form-group">
+                        <h3 class="card-title">Treść</h3>
+                        <textarea class="summernote" name="description" required>{{ about.description }}</textarea>
+                    </div>
+                    <div class="edit_user_footer">
+                        <button class="mt-2 pull-left" id="edit_user_cancel" type="button">Anuluj</button>
+                        <button class="btn btn-sm btn-primary pull-right"><i class="fa fa-save" type="submit"></i> &nbsp; Zatwierdź</button>
+                    </div>
+                </form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+const users_list_site = `{{ path('about_edit') }}`;
+{# const unique_login_check_url = `{{ path("unique_login_check") }}`; #}
+
+$(function () {
+    // Summernote
+    $('.summernote').summernote()
+    })
+</script>
+<script src="{{ asset('/js/admin_user_edit.js') }}"></script>
+{% endblock %}

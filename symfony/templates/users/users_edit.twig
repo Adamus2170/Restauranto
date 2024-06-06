@@ -1,0 +1,148 @@
+{% extends "empty.twig" %}
+
+{% block stylesheets %}{% endblock %}
+
+{% block subtitle %}GDZIE JEST PODTYTUŁ{% endblock %}
+
+{% block page_title %}Użytkownicy{% endblock %}
+{% block page_subtitle %}{% endblock %}
+
+{% block before_page_content %}<hr>{% endblock %}
+
+{% block page_content %}
+<div class="content">
+    <div class="container mt-6" style="width: 100%;">
+        <div class="form-group" style="display: flex; width: 100%;">
+            <label for="monthpicker" id="label_monthpicker">Znajdź rekord:</label>
+            <input class="form-control input-sm" type="text" id="data_search" value="" style="display: inline-block; width: 150px; margin-left: 10px;">
+            <input type="submit" class="btn btn-primary" id="month_submit" value="Szukaj"/>
+			<a href="{{ path('add_user_twig') }}" class="btn btn-info" role="button">Dodaj użytkownika</a>
+        </div>
+    </div>
+    <div class="table">
+        <table class="table table-striped" id="main_table">
+            <tbody class="data">
+                <tr class="table_headers">
+                    <th class="first_th">Id</th>
+					<th class="first_th">Login</th>
+					<th class="first_th">Hasło</th>
+                    <th class="first_th">Role</th>
+					<th class="first_th"></th>
+					<th class="first_th"></th>
+                </tr>
+				{% for user in users %}
+				<form action="{{ path('delete_user', { 'id': user.id}) }}" method="POST">
+					<tr row_id="{{ user.id }}">
+						<td>{{ user.id }}</td>
+						<td>{{ user.username }}</td>
+						<td>{{ user.password }}</td>
+						{% for roles in user.roles %}
+                        	<td>{{ roles }}</td>
+						{% endfor %}	
+						<td></td>
+					</tr>
+				</form>
+        		{% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+$(document).ready(function(){
+	$(document).on('click', 'tr[row_id]' , function(){
+				let row_id = 1*$(this).attr('row_id');
+				location.href = "/users_edit/edit/"+row_id;
+			});
+})
+</script>
+{# <script>
+		let search_offset = 0;
+		let search_size = 30;
+
+		function search(callback = () => {}){
+			$('.data').append('<tr class="loading"><td colspan="7" style="text-align: center;">Wczytywanie... <i class="fa fa-spin fa-spinner"></i></td></tr>');
+			let phrase = $('#data_search').val();
+
+			$.get('{{ path("menu_search") }}', {phrase: phrase, search_offset: search_offset, search_size: search_size}, function(data){
+				let rows = '';
+				data.rows.forEach((obj) => {
+					let status_color = '#000';
+					let status_label = '-';
+
+					if(obj.status){
+						status_color = obj.status.color;
+						status_label = obj.status.label;
+					}
+
+					//let profiles = "";
+					//if(obj.profiles.length > 0){
+					//	profiles = obj.profiles.join(', ');
+					//} else {
+					//	profiles = '-';
+					//}
+
+					let roles = "";
+					if(obj.roles.length > 0){
+						roles = obj.roles.join(', ');
+					} else {
+						roles = '-';
+					}
+
+					rows += `
+						<tr row_id="${obj.id}">
+							<td>#${obj.id}</td>
+							<td>${obj.name}</td>
+							<td>${obj.ingredients}</td>
+							<td>${obj.price}</td>
+						</tr>
+					`;
+				});
+
+				if(search_offset == 0){
+					$('.data').html('');
+					if(rows == ''){
+						$('.data').html('<tr><td style="color: #999;" colspan="7"><i class="fa fa-times"></i> Brak wyników</td></tr>');
+					}
+				}
+
+				$('.data').find('.loading').remove();
+				$('.data').append(rows);
+
+				if(search_offset > 0 && data.rows.length < search_size){
+					$('.data').append('<tr class="loading"><td colspan="7" style="text-align: center;">Wyświetlono wszystkie wyniki</td></tr>');
+				}
+
+				callback();
+			});
+		}
+
+		$(document).ready(function(){
+			$('#data_search').keyup($.debounce(500, function(){
+				search_offset = 0;
+				search();
+			}));
+
+			$(window).scroll($.debounce(500, function () {
+				let pageHeight = document.documentElement.offsetHeight;
+				let windowHeight = window.innerHeight;
+				let scrollPosition = window.scrollY || window.pageYOffset || document.body.scrollTop + (document.documentElement && document.documentElement.scrollTop || 0);
+				
+				if (pageHeight <= windowHeight+scrollPosition) {
+					search_offset += search_size;
+					search();
+				}
+			}));
+
+			$(document).on('click', 'tr[row_id]' , function(){
+				let row_id = 1*$(this).attr('row_id');
+				location.href = "/menu_edit/search/"+row_id;
+			});
+
+			search();
+		});
+
+	</script> #}
+  {% endblock %}

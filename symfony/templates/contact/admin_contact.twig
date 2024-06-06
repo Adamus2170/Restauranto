@@ -1,0 +1,45 @@
+{% extends "empty.twig" %}
+
+{% block stylesheets %}{% endblock %}
+
+{% block subtitle %}GDZIE JEST PODTYTUŁ{% endblock %}
+
+{% block page_title %}Kontakt{% endblock %}
+{% block page_subtitle %}{% endblock %}
+
+{% block before_page_content %}<hr>{% endblock %}
+
+{% block page_content %}
+<div class="content">
+{# TODO skrypt do wyszukiwania wartości w tabeli #}
+    <div class="container mt-6" style="width: 100%;">
+        <div class="form-group" style="display: flex; width: 100%;">
+            <label for="monthpicker" id="label_monthpicker">Znajdź rekord:</label>
+            <input type="text" class="form-control" id="monthpicker">
+            <input type="submit" class="btn btn-primary" id="month_submit" value="Szukaj"/>
+        </div>
+    </div>
+    <div class="table">
+        <table class="table table-striped" id="main_table">
+            <tbody>
+                <tr class="table_headers">
+                    <th class="first_th">Id</th>
+					<th class="first_th">Nazwa</th>
+					<th class="first_th">Email</th>
+					<th class="first_th">Temat</th>
+                    <th class="first_th">Treść</th>
+                </tr>
+				{% for contact in mail %}
+				<tr class="">
+					<td class="first_th">{{ contact.id }}</td>
+					<td class="first_th">{{ contact.name }}</td>
+					<td class="first_th">{{ contact.email }}</td>
+					<td class="first_th">{{ contact.subject }}</td>
+                    <td class="first_th">{{ contact.message }}</td>
+				</tr>
+        		{% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

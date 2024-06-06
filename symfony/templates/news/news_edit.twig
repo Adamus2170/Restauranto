@@ -1,0 +1,61 @@
+{% extends "empty.twig" %}
+
+{% block stylesheets %}{% endblock %}
+
+{% block subtitle %}GDZIE JEST PODTYTUŁ{% endblock %}
+
+{% block page_title %}Aktualności{% endblock %}
+{% block page_subtitle %}{% endblock %}
+
+{% block before_page_content %}<hr>{% endblock %}
+
+{% block page_content %}
+{# TODO skrypt do wyszukiwania wartości w tabeli #}
+<div class="content">
+    <div class="container mt-6" style="width: 100%;">
+        <div class="form-group" style="display: flex; width: 100%;">
+            <label for="monthpicker" id="label_monthpicker">Znajdź rekord:</label>
+            <input class="form-control input-sm" type="text" id="data_search" value="" style="display: inline-block; width: 150px; margin-left: 10px;">
+            <input type="submit" class="btn btn-primary" id="month_submit" value="Szukaj"/>
+			<a href="{{ path('add_news_twig') }}" class="btn btn-info" role="button">Dodaj danie</a>
+        </div>
+    </div>
+    <div class="table">
+        <table class="table table-striped" id="main_table">
+            <tbody>
+                <tr class="table_headers">
+                    <th class="first_th">Id</th>
+                    <th class="first_th">Nazwa</th>
+                    <th class="first_th">Składniki</th>
+                    <th class="first_th">Cena</th>
+                    <th class="first_th">Zdjęcie</th>
+                    <th class="first_th"></th>
+                </tr>
+				{% for news in newsmenu %}
+                <form action="{{ path('delete_news', {'id': news.id}) }}" action="POST">
+                    <tr row_id="{{ news.id }}">
+                        <td>{{ news.id }}</td>
+                        <td>{{ news.name }}</td>
+                        <td>{{ news.ingredients }}</td>
+                        <td>{{ news.price }}zł</td>
+                        <td><img class="mt-2" src='../uploads/{{ news.image }}' alt='danie' height="100px" width="200px"></td>
+                        <td></td>
+                    </tr>
+                </form>
+        		{% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+$(document).ready(function(){
+	$(document).on('click', 'tr[row_id]' , function(){
+		let row_id = 1*$(this).attr('row_id');
+		location.href = "/news_edit/edit_dish/"+row_id;
+	});
+})
+</script>
+{% endblock %}

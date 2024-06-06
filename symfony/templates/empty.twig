@@ -1,0 +1,49 @@
+{% extends "admin_base.twig" %}
+
+{% block title %}{{ parent() }} | {% block subtitle %}ModuleName{% endblock %}{% endblock %}
+
+{% block body %}
+<div class="wrapper">
+	{{ include('common/admin_header.twig') }}
+
+	<!-- Left side column. contains the logo and sidebar -->
+	<aside class="main-sidebar">
+
+		<!-- sidebar: style can be found in sidebar.less -->
+		<section class="sidebar">
+			<!-- Sidebar Menu -->
+			{% include 'common/admin_menu.twig' %}
+			<!-- /.sidebar-menu -->
+		</section>
+		<!-- /.sidebar -->
+	</aside>
+
+	<!-- Content Wrapper. Contains page content -->
+	<div class="content-wrapper">
+		<!-- Content Header (Page header) -->
+		<section class="content-header clearfix">
+			<h1 class="pull-left">
+				{% block page_title %}Page Title{% endblock %}
+				<small>{% block page_subtitle %}Subtitle{% endblock %}</small>
+			</h1>
+			<div class="pull-left page-info">
+				{% block page_info %}{% endblock %}
+			</div>
+			<div class="pull-right small-screen-margin-top">
+				{% block page_actions %}{% endblock %}
+			</div>
+		</section>
+
+		{% block before_page_content %}{% endblock %}
+
+		<!-- Main content -->
+		<section class="content {% block page_content_class %}{% endblock %}">
+			{% block page_content %}{% endblock %}
+		</section>
+		<!-- /.content -->
+
+		{% block after_page_content %}{% endblock %}
+	</div>
+	<!-- /.content-wrapper -->
+</div>
+{% endblock %}

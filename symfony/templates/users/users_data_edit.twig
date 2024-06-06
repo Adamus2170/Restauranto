@@ -1,0 +1,64 @@
+{% extends "empty.twig" %}
+
+{% block stylesheets %}{% endblock %}
+
+{% block subtitle %}GDZIE JEST PODTYTUŁ{% endblock %}
+
+{% block page_title %}Edytuj użytkownika{% endblock %}
+{% block page_subtitle %}{% endblock %}
+
+{% block before_page_content %}<hr>{% endblock %}
+
+{% block page_content %}
+<div class="row">
+	<div class="col-lg-6 col-lg-offset-3">
+		<div class="box box-default">
+			<div class="box-body">
+				<form action="{{ path('edit_users', { 'id': user.id }) }}" method="POST" id="edit_user_form">
+					<input type="hidden" name="id" value="" />
+					<div class="form-group">
+						<label>Login<a style="color: #F00">*</a></label><div class="login-alert form-alerts"></div>
+						<input class="form-control" type="text" name="username" value="{{ user.username }}" required>
+					</div>
+					<div class="form-group">
+						<label>Hasło<a style="color: #F00">*</a></label><div class="password-alert form-alerts"></div><span class='pull-right'>Puste pole = hasło bez zmian</span>
+						<input class="form-control" name="password" type="password" placeholder="(wymagane)">        
+					</div>
+					<div class="form-group">
+						<label>Powtórz hasło<a style="color: #F00">*</a></label><div class="password-alert form-alerts"></div>
+						<input class="form-control" name="password_repeat" type="password" placeholder="(wymagane)">
+					</div>
+					<div class="form-group">
+						<label>Dodatkowe role<a style="color: #F00">*</a></label>
+						<select class="form-control" name="roles">
+							<option value="ROLE_ADMIN">Administrator</option>
+                            <option value="ROLE_USER">Użytkownik</option>
+						</select>
+					</div>
+				</form>
+				<div class="edit_user_footer">
+					<button type="button" class="btn btn-sm btn-default pull-left" id="edit_user_cancel" ><i class="fa fa-times"></i> &nbsp; Anuluj</button>
+					<button type="submit" class="btn btn-sm btn-primary pull-right" id="edit_user_save" form="edit_user_form"><i class="fa fa-save"></i> &nbsp; Zapisz</button>
+					<form action="{{ path('delete_user', { 'id': user.id }) }}" method="POST">
+						<button type="submit" class="btn btn-sm btn-primary pull-right"><i class="fa fa-save"></i> &nbsp; Usuń</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+		const users_list_site = `{{ path('users_edit') }}`;
+		{# const unique_login_check_url = `{{ path("unique_login_check") }}`; #}
+</script>
+<script src="{{ asset('/js/admin_user_edit.js') }}"></script>
+{# <script>
+$(function () {
+    // Summernote
+    $('.summernote').summernote()
+    })
+</script> #}
+{% endblock %}
