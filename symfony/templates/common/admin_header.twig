@@ -13,7 +13,7 @@
       <!-- logo for regular mobile devices -->
 
       <!-- Navbar Right Menu -->
-      <div class="navbar-custom-menu mb-2">
+      <div class="navbar-custom-menu">
         <ul class="sidebar-menu" data-widget="tree">
           <!-- User Account Menu -->
           <li class="treeview" style="height: auto;">
@@ -32,10 +32,8 @@
               </li> #}
               <!-- Menu Footer-->
               <li class="user-footer" class="dropdown-item">
-                <div class="pull-left">
-                </div>
-                <div class="pull-right">
-                  <a href="{{ path("logout") }}" class="btn btn-primary">Wyloguj</a>
+                <div>
+                  <a href="{{ path("logout") }}" class="btn btn-primary pull-right">Wyloguj</a>
                 </div>
               </li>
             </ul>

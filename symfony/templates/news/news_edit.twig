@@ -10,7 +10,6 @@
 {% block before_page_content %}<hr>{% endblock %}
 
 {% block page_content %}
-{# TODO skrypt do wyszukiwania wartości w tabeli #}
 <div class="content">
     <div class="container mt-6" style="width: 100%;">
         <div class="form-group" style="display: flex; width: 100%;">
@@ -22,27 +21,14 @@
     </div>
     <div class="table">
         <table class="table table-striped" id="main_table">
-            <tbody>
+            <tbody class="data">
                 <tr class="table_headers">
                     <th class="first_th">Id</th>
                     <th class="first_th">Nazwa</th>
                     <th class="first_th">Składniki</th>
                     <th class="first_th">Cena</th>
                     <th class="first_th">Zdjęcie</th>
-                    <th class="first_th"></th>
                 </tr>
-				{% for news in newsmenu %}
-                <form action="{{ path('delete_news', {'id': news.id}) }}" action="POST">
-                    <tr row_id="{{ news.id }}">
-                        <td>{{ news.id }}</td>
-                        <td>{{ news.name }}</td>
-                        <td>{{ news.ingredients }}</td>
-                        <td>{{ news.price }}zł</td>
-                        <td><img class="mt-2" src='../uploads/{{ news.image }}' alt='danie' height="100px" width="200px"></td>
-                        <td></td>
-                    </tr>
-                </form>
-        		{% endfor %}
             </tbody>
         </table>
     </div>
@@ -51,11 +37,87 @@
 
 {% block javascripts %}
 <script>
-$(document).ready(function(){
-	$(document).on('click', 'tr[row_id]' , function(){
-		let row_id = 1*$(this).attr('row_id');
-		location.href = "/news_edit/edit_dish/"+row_id;
+	let search_offset = 0;
+	let search_size = 30;
+
+	function search(callback = () => {}){
+		$('.data').append('<tr class="loading"><td colspan="7" style="text-align: center;">Wczytywanie... <i class="fa fa-spin fa-spinner"></i></td></tr>');
+		let phrase = $('#data_search').val();
+
+		$.get('{{ path("news_search") }}', {phrase: phrase, search_offset: search_offset, search_size: search_size}, function(data){
+			let rows = `
+				<tr class="table_headers">
+					<th class="first_th">Id</th>
+					<th class="first_th">Nazwa</th>
+					<th class="first_th">Składniki</th>
+					<th class="first_th">Cena</th>
+					<th class="first_th">Zdjęcie</th>
+				</tr>
+			`;
+
+			data.rows.forEach((obj) => {
+				let status_color = '#000';
+				let status_label = '-';
+
+					//let profiles = "";
+					//if(obj.profiles.length > 0){
+					//	profiles = obj.profiles.join(', ');
+					//} else {
+					//	profiles = '-';
+					//}
+
+				rows += `
+					<tr row_id='${obj.id}'>
+							<td>#${obj.id}</td>
+							<td>${obj.name}</td>
+							<td>${obj.ingredients}</td>
+							<td>${obj.price}</td>
+							<td><img src='../uploads/${obj.image}' alt='danie' height="100px" width="200px"></td>
+					</tr>
+				`;
+			});
+
+			if(search_offset == 0){
+				$('.data').html('');
+				if(rows == ''){
+					$('.data').html('<tr><td style="color: #999;" colspan="7"><i class="fa fa-times"></i> Brak wyników</td></tr>');
+				}
+			}
+
+			$('.data').find('.loading').remove();
+			$('.data').append(rows);
+
+			if(search_offset > 0 && data.rows.length < search_size){
+				$('.data').append('<tr class="loading"><td colspan="7" style="text-align: center;">Wyświetlono wszystkie wyniki</td></tr>');
+			}
+
+			callback();
+		});
+	}
+
+	$(document).ready(function(){
+		$('#data_search').keyup($.debounce(500, function(){
+			search_offset = 0;
+			search();
+		}));
+
+		$(window).scroll($.debounce(500, function () {
+			let pageHeight = document.documentElement.offsetHeight;
+			let windowHeight = window.innerHeight;
+			let scrollPosition = window.scrollY || window.pageYOffset || document.body.scrollTop + (document.documentElement && document.documentElement.scrollTop || 0);
+				
+			if (pageHeight <= windowHeight+scrollPosition) {
+				search_offset += search_size;
+				search();
+			}
+		}));
+
+		$(document).on('click', 'tr[row_id]' , function(){
+			let row_id = 1*$(this).attr('row_id');
+			location.href = "/news_edit/edit_dish/"+row_id;
+		});
+
+		search();
 	});
-})
-</script>
+</script> 
 {% endblock %}

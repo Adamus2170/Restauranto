@@ -13,5 +13,11 @@ class HomepageController extends AbstractController
     {
         return $this->render('homepage/homepage_edit.twig');
     }
+
+    #[Route("/slider", name: "slider")]
+    public function slider()
+    {
+        return $this->render('slider.twig');
+    }
 }
 

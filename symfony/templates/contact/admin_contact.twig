@@ -15,13 +15,13 @@
     <div class="container mt-6" style="width: 100%;">
         <div class="form-group" style="display: flex; width: 100%;">
             <label for="monthpicker" id="label_monthpicker">Znajdź rekord:</label>
-            <input type="text" class="form-control" id="monthpicker">
+            <input class="form-control input-sm" type="text" id="data_search" value="" style="display: inline-block; width: 150px; margin-left: 10px;">
             <input type="submit" class="btn btn-primary" id="month_submit" value="Szukaj"/>
         </div>
     </div>
     <div class="table">
         <table class="table table-striped" id="main_table">
-            <tbody>
+            <tbody class="data">
                 <tr class="table_headers">
                     <th class="first_th">Id</th>
 					<th class="first_th">Nazwa</th>
@@ -29,17 +29,89 @@
 					<th class="first_th">Temat</th>
                     <th class="first_th">Treść</th>
                 </tr>
-				{% for contact in mail %}
-				<tr class="">
-					<td class="first_th">{{ contact.id }}</td>
-					<td class="first_th">{{ contact.name }}</td>
-					<td class="first_th">{{ contact.email }}</td>
-					<td class="first_th">{{ contact.subject }}</td>
-                    <td class="first_th">{{ contact.message }}</td>
-				</tr>
-        		{% endfor %}
             </tbody>
         </table>
     </div>
 </div>
+{% endblock %}
+{% block javascripts %}
+<script>
+	let search_offset = 0;
+	let search_size = 30;
+
+	function search(callback = () => {}){
+		$('.data').append('<tr class="loading"><td colspan="7" style="text-align: center;">Wczytywanie... <i class="fa fa-spin fa-spinner"></i></td></tr>');
+		let phrase = $('#data_search').val();
+
+		$.get('{{ path("contact_search") }}', {phrase: phrase, search_offset: search_offset, search_size: search_size}, function(data){
+			let rows = `
+				<tr class="table_headers">
+					<th class="first_th">Id</th>
+					<th class="first_th">Nazwa</th>
+					<th class="first_th">Email</th>
+					<th class="first_th">Temat</th>
+					<th class="first_th">Treść</th>
+				</tr>
+			`;
+
+			data.rows.forEach((obj) => {
+				let status_color = '#000';
+				let status_label = '-';
+
+					//let profiles = "";
+					//if(obj.profiles.length > 0){
+					//	profiles = obj.profiles.join(', ');
+					//} else {
+					//	profiles = '-';
+					//}
+
+				rows += `
+					<tr row_id='${obj.id}'>
+							<td>#${obj.id}</td>
+							<td>${obj.name}</td>
+							<td>${obj.email}</td>
+							<td>${obj.subject}</td>
+							<td>${obj.message}</td>
+					</tr>
+				`;
+			});
+
+			if(search_offset == 0){
+				$('.data').html('');
+				if(rows == ''){
+					$('.data').html('<tr><td style="color: #999;" colspan="7"><i class="fa fa-times"></i> Brak wyników</td></tr>');
+				}
+			}
+
+			$('.data').find('.loading').remove();
+			$('.data').append(rows);
+
+			if(search_offset > 0 && data.rows.length < search_size){
+				$('.data').append('<tr class="loading"><td colspan="7" style="text-align: center;">Wyświetlono wszystkie wyniki</td></tr>');
+			}
+
+			callback();
+		});
+	}
+
+	$(document).ready(function(){
+		$('#data_search').keyup($.debounce(500, function(){
+			search_offset = 0;
+			search();
+		}));
+
+		$(window).scroll($.debounce(500, function () {
+			let pageHeight = document.documentElement.offsetHeight;
+			let windowHeight = window.innerHeight;
+			let scrollPosition = window.scrollY || window.pageYOffset || document.body.scrollTop + (document.documentElement && document.documentElement.scrollTop || 0);
+				
+			if (pageHeight <= windowHeight+scrollPosition) {
+				search_offset += search_size;
+				search();
+			}
+		}));
+
+		search();
+	});
+</script> 
 {% endblock %}

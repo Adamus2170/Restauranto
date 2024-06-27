@@ -25,6 +25,9 @@ class Menu
     #[ORM\Column(type: "string", length: 255)]
     private $image;
 
+    #[ORM\Column(type: "string", length: 255)]
+    private $dishType;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -77,4 +80,17 @@ class Menu
 
         return $this;
     }
+
+    public function getDishType(): ?string
+    {
+        return $this->dishType;
+    }
+
+    public function setDishType(string $dishType): self
+    {
+        $this->dishType = $dishType;
+
+        return $this;
+    }
+
 }

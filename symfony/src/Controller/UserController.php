@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\Menu;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -111,5 +111,46 @@ class UserController extends AbstractController
             'id' => $user->getId()
         ]);
     }
+
+        // Wyszukiwanie menu w admin panelu
+        #[Route("/users_edit/search", name: "users_search")]
+        function users_search(Request $request, EntityManagerInterface $em)
+        {
+            $resp = [
+                'rows' => []
+            ];
+    
+            $phrase = $request->query->get('phrase');
+            $search_offset = $request->query->get('search_offset');
+            $search_size = $request->query->get('search_size');
+    
+            $queryBuilder = $em->createQueryBuilder();
+            $queryBuilder->select('obj')->from(User::class, 'obj');
+            
+            $queryBuilder->orWhere("obj.username LIKE :phrase");
+            $queryBuilder->orWhere("obj.password LIKE :phrase");
+            $queryBuilder->orWhere("obj.roles LIKE :phrase");
+            $queryBuilder->setParameter('phrase', "%$phrase%");
+    
+            $queryBuilder->orderBy("obj.id", 'ASC');
+            $queryBuilder->setFirstResult($search_offset)->setMaxResults($search_size);
+    
+            $Records = $queryBuilder->getQuery()->execute();
+    
+            foreach($Records as $record){
+                if($record->getUsername()){
+                    $username = $record->getUsername();
+                }
+                
+                array_push($resp['rows'], [
+                    'id' => $record->getID(),
+                    'username' => $username,
+                    'password' => $record->getPassword(),
+                    'roles' => $record->getRoles()
+                ]);
+            }
+    
+            return new JsonResponse($resp);
+        }
 }
 

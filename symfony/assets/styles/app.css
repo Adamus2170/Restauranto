@@ -3,8 +3,9 @@
 @import '~@fontsource/roboto-condensed';
 
 body {
-    background-color: white;
-}
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: black;
+  }
 
 header {
     background-color: white;
@@ -15,7 +16,7 @@ footer {
 }
 
 .content {
-    background-color: lightgray;
+    background-color: white;
 }
 
 .contactf {

@@ -6,6 +6,7 @@ use App\Entity\Menu;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -66,6 +67,7 @@ class MenuController extends AbstractController
         $menu->setName($request->get("name"));
         $menu->setIngredients($request->get("ingredients"));
         $menu->setPrice($request->get("price"));
+        $menu->setDishType($request->get("rodzaj"));
 
         $em->persist($menu);
         $em->flush();
@@ -111,6 +113,7 @@ class MenuController extends AbstractController
         $dish->setName($request->get("name"));
         $dish->setIngredients($request->get("ingredients"));
         $dish->setPrice($request->get("price"));
+        $dish->setDishType($request->get("rodzaj"));
         $em->flush();
 
         return $this->redirectToRoute('menu_edit', [
@@ -130,6 +133,49 @@ class MenuController extends AbstractController
         return $this->redirectToRoute("menu_edit", [
             'id' => $dish->getId()
         ]);
+    }
+
+    // Wyszukiwanie menu w admin panelu
+    #[Route("/menu_edit/search", name: "menu_search")]
+    function menu_search(Request $request, EntityManagerInterface $em)
+    {
+        $resp = [
+            'rows' => []
+        ];
+    
+        $phrase = $request->query->get('phrase');
+        $search_offset = $request->query->get('search_offset');
+        $search_size = $request->query->get('search_size');
+    
+        $queryBuilder = $em->createQueryBuilder();
+        $queryBuilder->select('obj')->from(Menu::class, 'obj');
+            
+        $queryBuilder->orWhere("obj.name LIKE :phrase");
+        $queryBuilder->orWhere("obj.ingredients LIKE :phrase");
+        $queryBuilder->orWhere("obj.price LIKE :phrase");
+        $queryBuilder->setParameter('phrase', "%$phrase%");
+    
+        $queryBuilder->orderBy("obj.id", 'ASC');
+        $queryBuilder->setFirstResult($search_offset)->setMaxResults($search_size);
+    
+        $Records = $queryBuilder->getQuery()->execute();
+    
+        foreach($Records as $record){
+            if($record->getName()){
+                $name = $record->getName();
+            }
+                
+            array_push($resp['rows'], [
+                'id' => $record->getID(),
+                'name' => $name,
+                'ingredients' => $record->getIngredients(),
+                'price' => $record->getPrice(),
+                'dishType' => $record->getDishType(),
+                'image' => $record->getImage()
+            ]);
+        }
+    
+        return new JsonResponse($resp);
     }
 }
 

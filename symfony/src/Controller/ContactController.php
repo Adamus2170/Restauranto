@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Contact;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
@@ -38,14 +39,12 @@ class ContactController extends AbstractController
 
         $contact->setName($request->get("name"));
         $contact->setEmail($request->get("email"));
-        $contact->setSubject($request->get("subject"));
-        $contact->setMessage($request->get("message"));
 
         $email = (new Email())
             ->from("adam.racki@asterisk-dev.pl")
             ->to($request->get('email'))
-            ->subject($request->get("subject"))
-            ->text($request->get("message"));
+            ->subject("Newsletter")
+            ->text("Dziękujemy za zapis do newslettera! Od teraz będziemy cię informać o wszystkich nowościach!");
 
         $mailer->send($email);
 
@@ -54,5 +53,45 @@ class ContactController extends AbstractController
 
         return $this->redirectToRoute("app_contact");
     }
+
+        // Wyszukiwanie menu w admin panelu
+        #[Route("/admin_contact/search", name: "contact_search")]
+        function contact_search(Request $request, EntityManagerInterface $em)
+        {
+            $resp = [
+                'rows' => []
+            ];
+        
+            $phrase = $request->query->get('phrase');
+            $search_offset = $request->query->get('search_offset');
+            $search_size = $request->query->get('search_size');
+        
+            $queryBuilder = $em->createQueryBuilder();
+            $queryBuilder->select('obj')->from(Contact::class, 'obj');
+                
+            $queryBuilder->orWhere("obj.email LIKE :phrase");
+            $queryBuilder->setParameter('phrase', "%$phrase%");
+        
+            $queryBuilder->orderBy("obj.id", 'ASC');
+            $queryBuilder->setFirstResult($search_offset)->setMaxResults($search_size);
+        
+            $Records = $queryBuilder->getQuery()->execute();
+        
+            foreach($Records as $record){
+                if($record->getEmail()){
+                    $email = $record->getEmail();
+                }
+                    
+                array_push($resp['rows'], [
+                    'id' => $record->getID(),
+                    'name' => $record->getName(),
+                    'email' => $email,
+                    'subject' => $record->getSubject(),
+                    'message' => $record->getMessage()
+                ]);
+            }
+        
+            return new JsonResponse($resp);
+        }
 }
 

@@ -1,7 +1,7 @@
 {% extends "homepage.twig" %}
 
 {% block body %}
-<div class="content">
+<div class="content bimage2">
   <div class="container">
     <div class="contactf mx-auto">
       <form action="{{ path('contact_mail') }}" method="POST">
@@ -13,23 +13,18 @@
           <label for="exampleInputEmail1">Email</label>
           <input type="email" class="form-control" name="email" aria-describedby="emailHelp" required>
         </div>
-        <div class="form-group">
-          <label for="exampleFormControlTextarea1">Temat</label>
-          <input type="text" class="form-control" name="subject" required>
-        </div>
-        <div class="form-group">
-          <label for="exampleFormControlTextarea1">Wiadomość</label>
-          <textarea class="form-control" name="message" rows="5" required></textarea>
-        </div>
         <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="exampleCheck1">
+          <input type="checkbox" class="form-check-input" id="exampleCheck1" required>
           <label class="form-check-label" for="exampleCheck1">Zgadzam się na otrzymywanie wiadomości mailowych</label>
         </div>
-        <div class="edit_user_footer">
-          <button class="btn btn-sm btn-primary pull-right"><i class="fa fa-paper-plane" type="submit"></i> &nbsp; Zatwierdź</button>
+        <div class="edit_user_footer d-flex justify-content-end">
+          <button class="btn btn-sm btn-primary"><i class="fa fa-paper-plane" type="submit"></i> &nbsp; Zatwierdź</button>
         </div>
       </form>
     </div>
+  </div>
+  <div class="d-flex justify-content-center mt-4">
+    <iframe class="mb-4" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2445.26771482253!2d20.890454712142944!3d52.20218227186265!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xab688964976eb3db%3A0x38f772737bbb94a0!2sAsterisk-Dev!5e0!3m2!1spl!2spl!4v1718729786923!5m2!1spl!2spl" width="800" height="600" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
   </div>
 </div>
 {% endblock %}

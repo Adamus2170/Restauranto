@@ -2,12 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Menu;
-use App\Entity\Users;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -58,48 +54,6 @@ class AdminController extends AbstractController
     public function logout()
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
-    }
-
-    // Wyszukiwanie menu w admin panelu
-    #[Route("/menu_edit/search", name: "menu_search")]
-    function menu_search(Request $request, EntityManagerInterface $em)
-    {
-        $resp = [
-            'rows' => []
-        ];
-
-        $phrase = $request->query->get('phrase');
-        $search_offset = $request->query->get('search_offset');
-        $search_size = $request->query->get('search_size');
-
-        $queryBuilder = $em->createQueryBuilder();
-        $queryBuilder->select('obj')->from(Menu::class, 'obj');
-        
-        $queryBuilder->orWhere("obj.name LIKE :phrase");
-        $queryBuilder->orWhere("obj.ingredients LIKE :phrase");
-        $queryBuilder->orWhere("obj.price LIKE :phrase");
-        $queryBuilder->setParameter('phrase', "%$phrase%");
-
-        $queryBuilder->orderBy("obj.id", 'DESC');
-        $queryBuilder->setFirstResult($search_offset)->setMaxResults($search_size);
-
-        $Records = $queryBuilder->getQuery()->execute();
-
-        foreach($Records as $record){
-            if($record->getName()){
-                $name = $record->getName();
-            }
-            
-            array_push($resp['rows'], [
-                'id' => $record->getID(),
-                'name' => $name,
-                'ingredients' => $record->getIngredients(),
-                'price' => $record->getPrice(),
-                'image' => $record->getImage()
-            ]);
-        }
-
-        return new JsonResponse($resp);
     }
 }
 

@@ -35,6 +35,17 @@
                         <h3 class="card-title">Cena</h3>
                         <input type="number" class="form-control" name="price" value="{{ dish.price }}" required></input>
                     </div>
+                    <div class="form-group">
+                        <h3 class="card-title">Rodzaj</h3>
+                        <select type="number" class="form-control" name="rodzaj" required>
+                            <option value="Przystawka" {% if dish.dishType == "Przystawka" %} selected {% endif %}>Przystawka</option>
+                            <option value="Zupa" {% if dish.dishType == "Zupa" %} selected {% endif %}>Zupa</option>
+                            <option value="Danie główne" {% if dish.dishType == "Danie główne" %} selected {% endif %}>Danie główne</option>
+                            <option value="Deser" {% if dish.dishType == "Deser" %} selected {% endif %}>Deser</option>
+                            <option value="Napój bezalkoholowy" {% if dish.dishType == "Napój bezalkoholowy" %} selected {% endif %}>Napój bezalkoholowy</option>
+                            <option value="Napój alkoholowy" {% if dish.dishType == "Napój alkoholowy" %} selected {% endif %}>Napój alkoholowy</option>
+                        </select>
+                    </div>
                     <div class="edit_user_footer">
                         <button class="mt-2 pull-left" id="edit_user_cancel" type="button">Anuluj</button>
                         <button class="btn btn-sm btn-primary pull-right"><i class="fa fa-save" type="submit"></i> &nbsp; Zatwierdź</button>
@@ -56,7 +67,7 @@ const users_list_site = `{{ path('menu_edit') }}`;
 
 $(function () {
     // Summernote
-    $('.summernote').summernote()
+    $('.summernote').summernote();
     })
 </script>
 <script src="{{ asset('/js/admin_user_edit.js') }}"></script>

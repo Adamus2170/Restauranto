@@ -16,7 +16,7 @@ class About
     #[ORM\Column(length: 255)]
     private ?string $header = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 1000)]
     private ?string $description = null;
 
     #[ORM\Column(type: "string", length: 255)]

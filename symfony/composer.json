@@ -82,6 +82,7 @@
         }
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^3.6",
         "symfony/debug-bundle": "7.0.*",
         "symfony/maker-bundle": "^1.59",
         "symfony/stopwatch": "7.0.*",
